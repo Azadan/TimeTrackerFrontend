@@ -26,3 +26,15 @@ export const decodeToken = (token: string): JwtPayload => {
     }
 }
 
+export const getUserIdFromToken = (token: string) : number => {
+    try {
+        const decodedToken = decodeToken(token);
+        if (!decodedToken.userId) {
+            throw new Error('User ID not found in token');
+        }
+        return decodedToken.userId;
+    } catch (error) {
+        console.error('Error getting user ID from token:', error);
+        throw new Error('Error getting user ID from token');
+    }
+}
