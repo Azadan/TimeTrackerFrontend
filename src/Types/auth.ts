@@ -28,3 +28,10 @@ export type ApiResponse<T> = {
     success: boolean;
     data: T;
 }
+
+export type JwtPayload = {
+    email: string;
+    userId: number;
+    issuedAt: number
+    expiration: number;
+}
