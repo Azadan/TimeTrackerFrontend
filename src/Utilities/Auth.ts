@@ -67,3 +67,18 @@ export const isTokenExpired = (token: string) : boolean => {
     }
 
 }
+
+export const formatJwt = (token: string) : string => {
+    try {
+        const decodedToken = decodeToken(token);
+        return JSON.stringify({
+            email: decodedToken.email,
+            userId: decodedToken.userId,
+            issuedAt: new Date(decodedToken.issuedAt * 1000).toLocaleString(),
+            expiration: decodedToken.expiration * 1000 < Date.now()
+        }, null, 2);
+    } catch (error) {
+        console.error('Error formatting JWT:', error);
+        throw new Error('Error formatting JWT');
+    }
+}
