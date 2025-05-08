@@ -5,7 +5,7 @@ export const getAuthToken = (): string | null => {
     return localStorage.getItem('token');
 }
 
-export const removeAuthToken = () :void => {
+export const deleteAuthToken = () :void => {
     localStorage.removeItem('token');
 }
 
