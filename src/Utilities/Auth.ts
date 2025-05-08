@@ -1,3 +1,6 @@
+import {jwtDecode} from "jwt-decode";
+import type {JwtPayload} from "../Types/auth.ts";
+
 export const setAuthToken = (token: string) :void => {
     localStorage.setItem('token', token);
 }
@@ -12,5 +15,14 @@ export const deleteAuthToken = () :void => {
 export const isAuthenticated = (): boolean => {
     const token = getAuthToken();
     return token !== null;
+}
+
+export const decodeToken = (token: string): JwtPayload => {
+    try {
+        return jwtDecode<JwtPayload>(token);
+    } catch (error) {
+        console.error('Error decoding JWT:', error);
+        throw new Error('Error decoding JWT');
+    }
 }
 
