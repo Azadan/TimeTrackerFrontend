@@ -15,7 +15,15 @@ export const login = async (credentials: LoginRequest): Promise<AuthResponse> =>
 
 export const register = async (userData: RegisterRequest): Promise<ApiResponse<RegisterResponse>> => {
     try {
-        const response = await axios.post<ApiResponse<RegisterResponse>>(`${API_URL}/register`, userData);
+        const response = await axios.post<ApiResponse<RegisterResponse>>(
+            `${API_URL}/register`,
+            userData,
+            {
+                headers: {
+                    'Content-Type': 'application/json'
+                }
+            }
+        );
         return response.data;
     } catch (error) {
         // @ts-expect-error

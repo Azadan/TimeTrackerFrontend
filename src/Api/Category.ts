@@ -22,6 +22,7 @@ export const createCategory = async (categoryData: createCategoryRequest) => {
 export const getCategories = async (userId: number) => {
     try {
         const token = localStorage.getItem('token');
+        console.log("Finns det en token här: ", token);
         const response = await axios.get(`${API_URL}/find/${userId}`, {
             headers: {
                 'Content-Type': 'application/json',
