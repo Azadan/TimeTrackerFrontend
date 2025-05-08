@@ -38,3 +38,32 @@ export const getUserIdFromToken = (token: string) : number => {
         throw new Error('Error getting user ID from token');
     }
 }
+
+export const getEmailFromToken = (token: string) : string => {
+    try {
+        const decodedToken = decodeToken(token);
+        if (!decodedToken.email) {
+            throw new Error('Email not found in token');
+        }
+        return decodedToken.email;
+    } catch (error) {
+        console.error('Error getting email from token:', error);
+        throw new Error('Error getting email from token');
+    }
+}
+
+
+
+export const isTokenExpired = (token: string) : boolean => {
+    try {
+        const decodedToken = decodeToken(token);
+        if (!decodedToken.expiration) return true;
+
+        const currentTime = Date.now() / 1000;
+        return decodedToken.expiration < currentTime;
+        // eslint-disable-next-line @typescript-eslint/no-unused-vars
+    } catch (error) {
+        return true
+    }
+
+}
