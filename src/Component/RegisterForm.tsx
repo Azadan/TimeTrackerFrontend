@@ -56,8 +56,6 @@ const RegisterForm: React.FC = () => {
                             id="email"
                             name="email"
                             type="email"
-                            autoComplete="email"
-                            autoFocus
                             value={email}
                             onChange={(e) => setEmail(e.target.value)}
                         />
@@ -70,7 +68,6 @@ const RegisterForm: React.FC = () => {
                             required
                             name="password"
                             type="password"
-                            autoComplete="current-password"
                             value={password}
                             onChange={(e) => setPassword(e.target.value)}
                         />

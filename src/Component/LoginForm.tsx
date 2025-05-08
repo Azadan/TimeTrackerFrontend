@@ -51,8 +51,6 @@ const LoginForm: React.FC = () => {
                             id="email"
                             name="email"
                             type="email"
-                            autoComplete="email"
-                            autoFocus
                             value={email}
                             onChange={(e) => setEmail(e.target.value)}
                         />
@@ -66,7 +64,6 @@ const LoginForm: React.FC = () => {
                             name="password"
                             type="password"
                             id="password"
-                            autoComplete="current-password"
                             value={password}
                             onChange={(e) => setPassword(e.target.value)}
                         />
