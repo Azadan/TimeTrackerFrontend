@@ -5,37 +5,95 @@ import {setAuthToken} from "../Utilities/Auth.ts";
 
 
 const LoginForm: React.FC = () => {
-    const [email, setEmail] = useState<string>('');
-    const [password, setPassword] = useState<string>('');
-    const [error, setError] = useState<string | null>(null);
+    const [email, setEmail] = useState('');
+    const [password, setPassword] = useState('');
+    const [error, setError] = useState('');
+    const [loading, setLoading] = useState(false);
     const navigate = useNavigate();
 
-    const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
+    const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
-        setError(null);
+        setLoading(true);
+        setError('');
 
         try {
             const response = await login({email, password});
-            setAuthToken(response.token);
-            navigate('/dashboard');
-        } catch (err) {
-            setError('Invalid email or password');
+            setAuthToken(response.jwt);
+            console.log(response);
+            console.log(response.jwt);
+            alert('Inloggning lyckades');
+            navigate('/home');
+        } catch (err: any) {
+            setError(err.response?.data?.message || 'Failed login')
+        } finally {
+            setLoading(false);
         }
     };
 
+    const handleRegisterClick = () => {
+        navigate('/register');
+    }
     return (
-        <form onSubmit={handleSubmit}>
-            <h2>Login</h2>
-            {error && <p>{error}</p>}
-            <div>
-                <label>Email:</label>
-                <input type="email" value={email} onChange={(e) => setEmail(e.target.value)} required />
+        <div className="container">
+            <h1 className="app-title">Timetracker Application</h1>
+
+            <div className="card">
+                <h2 className="title">Login</h2>
+
+                {error && <div className="alert alert-error">{error}</div>}
+
+                <form className="form" onSubmit={handleSubmit}>
+                    <div className="form-group">
+                        <label htmlFor="email" className="form-label">Email Address</label>
+                        <input
+                            className="form-input"
+                            required
+                            id="email"
+                            name="email"
+                            type="email"
+                            autoComplete="email"
+                            autoFocus
+                            value={email}
+                            onChange={(e) => setEmail(e.target.value)}
+                        />
+                    </div>
+
+                    <div className="form-group">
+                        <label htmlFor="password" className="form-label">Password</label>
+                        <input
+                            className="form-input"
+                            required
+                            name="password"
+                            type="password"
+                            id="password"
+                            autoComplete="current-password"
+                            value={password}
+                            onChange={(e) => setPassword(e.target.value)}
+                        />
+                    </div>
+
+                    <div className="button-container">
+                        <button
+                            type="submit"
+                            className="button"
+                            disabled={loading}
+                        >
+                            {loading ? 'Logging in...' : 'Login'}
+                        </button>
+
+                        <button
+                            type="button"
+                            className="button"
+                            onClick={handleRegisterClick}
+                            disabled={loading}
+                        >
+                            Register
+                        </button>
+                    </div>
+                </form>
             </div>
-            <div>
-                <label>Password:</label>
-                <input type="password" value={password} onChange={(e) => setPassword(e.target.value)} required />
-            </div>
-            <button type="submit">Login</button>
-        </form>
+        </div>
     );
-}
+};
+
+export default LoginForm;
