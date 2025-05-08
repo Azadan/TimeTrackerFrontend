@@ -17,6 +17,10 @@ export const isAuthenticated = (): boolean => {
     return token !== null;
 }
 
+export const setUserId = (userId: number) :void => {
+    localStorage.setItem('userId', userId.toString());
+}
+
 export const decodeToken = (token: string): JwtPayload => {
     try {
         return jwtDecode<JwtPayload>(token);
