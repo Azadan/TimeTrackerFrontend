@@ -1,6 +1,6 @@
 import {useState, useEffect} from "react";
 import {useNavigate} from "react-router-dom";
-import {getCategories, createCategory} from "../Api/Category.ts";
+import {getCategories, createCategory, updateCategory} from "../Api/Category.ts";
 import {checkIn, checkOut, getCategoryStatistics, getActiveTimeEntry} from "../Api/TimeEntry.ts";
 import type {Category} from "../Types/Category.ts";
 
@@ -11,6 +11,7 @@ const Dashboard: React.FC = () => {
     const [newCategoryName, setNewCategoryName] = useState('');
     const [showCategoryCreateForm, setShowCategoryCreateForm] = useState(false);
     const [newCategoryDescription, setNewCategoryDescription] = useState('');
+    const [isEditing, setIsEditing] = useState(false);
     const [activeTimeEntry, setActiveTimeEntry] = useState<any>(0);
     const [statistics, setStatistics] = useState<any[]>([]);
     const [error, setError] = useState('');
@@ -65,23 +66,69 @@ const Dashboard: React.FC = () => {
         setSelectedCategory(category);
     }
 
-    const handleCreateCategory = async (e: React.FormEvent) => {
+    const handleEditClick = () => {
+        if (selectedCategory) {
+            setNewCategoryName(selectedCategory.name);
+            setNewCategoryDescription(selectedCategory.description);
+            setIsEditing(true);
+            setShowCategoryCreateForm(true);
+        }
+    };
+
+    const handleCategorySubmit = async (e: React.FormEvent) => {
         e.preventDefault();
 
         try {
-            await createCategory({
-                userId: Number(userId),
-                name: newCategoryName,
-                description: newCategoryDescription,
-            });
+            if (isEditing && selectedCategory) {
+                const response = await updateCategory(selectedCategory.categoryId, {
+                    name: newCategoryName,
+                    description: newCategoryDescription,
+                    userId: Number(userId)
+                });
+
+                if (response.success) {
+                    const updatedCategories = categories.map(cat =>
+                        cat.categoryId === selectedCategory.categoryId
+                            ? {...cat, name: newCategoryName, description: newCategoryDescription}
+                            : cat
+                    );
+
+                    setCategories(updatedCategories);
+                    setSelectedCategory({...selectedCategory, name: newCategoryName, description: newCategoryDescription});
+                    alert('Kategori uppdaterad!');
+                } else {
+                    setError(response.message || 'Failed to update category');
+                }
+            } else {
+                await createCategory({
+                    userId: Number(userId),
+                    name: newCategoryName,
+                    description: newCategoryDescription,
+                });
+                fetchCategories();
+            }
+
+
             setNewCategoryName('');
             setNewCategoryDescription('');
             setShowCategoryCreateForm(false);
-            fetchCategories();
+            setIsEditing(false);
         } catch (err: any) {
-            setError(err.response?.data?.message || 'Failed to create category');
+            setError(err.response?.data?.message || 'Operation failed');
         }
-    }
+    };
+
+    const toggleCategoryForm = () => {
+        if (showCategoryCreateForm) {
+            setShowCategoryCreateForm(false);
+            setIsEditing(false);
+            setNewCategoryName('');
+            setNewCategoryDescription('');
+        } else {
+            setShowCategoryCreateForm(true);
+            setIsEditing(false);
+        }
+    };
 
     const handleCheckIn = async () => {
         if (!selectedCategory) return
@@ -191,7 +238,8 @@ const Dashboard: React.FC = () => {
                 <div className="content-container">
                     {showCategoryCreateForm && (
                         <div className="create-form-wrapper">
-                            <form className="create-form" onSubmit={handleCreateCategory}>
+                            <form className="create-form" onSubmit={handleCategorySubmit}>
+                                <h3>{isEditing ? 'Redigera kategori' : 'Skapa ny kategori'}</h3>
                                 <div className="form-group">
                                     <label htmlFor="categoryName">Kategori: </label>
                                     <input
@@ -213,7 +261,9 @@ const Dashboard: React.FC = () => {
                                         placeholder="Ange kategori beskrivning"
                                     />
                                 </div>
-                                <button type="submit" className="submit-button">Skapa</button>
+                                <button type="submit" className="submit-button">
+                                    {isEditing ? 'Spara ändringar' : 'Skapa'}
+                                </button>
                             </form>
                         </div>
                     )}
@@ -228,6 +278,7 @@ const Dashboard: React.FC = () => {
                                     <div className="action-buttons">
                                         <button className="check-in-button" onClick={handleCheckIn}>Checka in</button>
                                         <button className="check-out-button" onClick={handleCheckOut}>Checka ut</button>
+                                        <button className="edit-button" onClick={handleEditClick}>Redigera kategori</button>
                                     </div>
 
                                     <div className="statistics-section">

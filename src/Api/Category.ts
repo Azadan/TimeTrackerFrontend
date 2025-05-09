@@ -35,3 +35,20 @@ export const getCategories = async (userId: number) => {
         throw new error('Failed to fetch categories');
     }
 }
+
+
+export const updateCategory = async (categoryId: number, data: createCategoryRequest) => {
+    const token = localStorage.getItem('token');
+    try {
+        const response = await axios.put(`${API_URL}/update/${categoryId}`, data, {
+            headers: {
+                'Content-Type': 'application/json',
+                Authorization: `Bearer ${token}`,
+            }
+        });
+        return response.data;
+    } catch (error) {
+        // @ts-ignore
+        throw new Error('Failed to update category');
+    }
+}
