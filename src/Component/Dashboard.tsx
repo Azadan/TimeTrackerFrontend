@@ -6,6 +6,7 @@ import type { Category } from "../Types/Category.ts";
 import CategorySidebar from "./CategorySidebar.tsx";
 import CategoryForm from "./CategoryForm.tsx";
 import CategoryDetails from "./CategoryDetails.tsx";
+import LogoutButton from "./Logout.tsx";
 
 // En komponent för att hantera instrumentpanelen där användaren kan se och hantera sina kategorier samt se sin statistik
 
@@ -101,7 +102,10 @@ const Dashboard: React.FC = () => {
 
     return (
         <div className="dashboard-container">
-            <h2>Dina kategorier</h2>
+            <div className="header-container">
+                <h2>Dina kategorier</h2>
+                <LogoutButton />
+            </div>
 
             <div className="dashboard-layout">
                 <CategorySidebar
