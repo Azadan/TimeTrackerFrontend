@@ -12,6 +12,11 @@ export const deleteAuthToken = () :void => {
     localStorage.removeItem('token');
 }
 
+export const logout = () :void => {
+    localStorage.removeItem('token');
+    localStorage.removeItem('userId');
+}
+
 export const isAuthenticated = (): boolean => {
     const token = getAuthToken();
     return token !== null;

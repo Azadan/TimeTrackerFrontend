@@ -4,6 +4,7 @@ import { getAllUsers } from "../Api/User";
 import {getCategoryStatistics} from "../Api/TimeEntry.ts";
 import type { UserStatistics } from "../Types/Statistics.ts";
 import {StatisticsTable} from "./StatisticalTable.tsx";
+import LogoutButton from "./Logout.tsx";
 
 
 // En komponent för att hantera instrumentpanelen för administratörer där de kan se statistik för alla användare
@@ -91,7 +92,11 @@ const AdminDashboard: React.FC = () => {
 
     return (
         <div className="admin-dashboard-container">
-            <h1>Admin Dashboard</h1>
+            <div className="header-container">
+                <h1>Admin Dashboard</h1>
+                <LogoutButton />
+            </div>
+
             {error && <div className="error-message">{error}</div>}
 
             {loading ? (
