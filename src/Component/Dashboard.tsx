@@ -139,6 +139,11 @@ const Dashboard: React.FC = () => {
                                 <>
                                     <h2>{selectedCategory.name}: </h2>
                                     <p className="category-description">{selectedCategory.description}</p>
+
+                                    <div className="action-buttons">
+                                        <button className="check-in-button">Checka in</button>
+                                        <button className="check-out-button">Checka ut</button>
+                                    </div>
                                 </>
                             ) : (
                                 <p>Vänligen välj en kategori för att se detaljer.</p>
