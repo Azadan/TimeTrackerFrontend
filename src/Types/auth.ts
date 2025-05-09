@@ -32,6 +32,7 @@ export type ApiResponse<T> = {
 export type JwtPayload = {
     email: string;
     userId: number;
+    isAdmin?: boolean;
     issuedAt: number
     expiration: number;
 }

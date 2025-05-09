@@ -78,11 +78,22 @@ export const formatJwt = (token: string) : string => {
         return JSON.stringify({
             email: decodedToken.email,
             userId: decodedToken.userId,
+            isAdmin: decodedToken.isAdmin,
             issuedAt: new Date(decodedToken.issuedAt * 1000).toLocaleString(),
             expiration: decodedToken.expiration * 1000 < Date.now()
         }, null, 2);
     } catch (error) {
         console.error('Error formatting JWT:', error);
         throw new Error('Error formatting JWT');
+    }
+}
+
+export const isUserAdmin = (token: string): boolean => {
+    try {
+        const decodedToken = decodeToken(token);
+        return !!decodedToken.isAdmin;
+    } catch (error) {
+        console.error('Error checking admin status:', error);
+        return false;
     }
 }
