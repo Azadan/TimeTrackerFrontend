@@ -1,7 +1,7 @@
 import {useState, useEffect} from "react";
 import {useNavigate} from "react-router-dom";
 import {getCategories, createCategory} from "../Api/Category.ts";
-import {checkIn} from "../Api/TimeEntry.ts";
+import {checkIn, checkOut} from "../Api/TimeEntry.ts";
 import type {Category} from "../Types/Category.ts";
 
 
@@ -11,6 +11,7 @@ const Dashboard: React.FC = () => {
     const [newCategoryName, setNewCategoryName] = useState('');
     const [showCategoryCreateForm, setShowCategoryCreateForm] = useState(false);
     const [newCategoryDescription, setNewCategoryDescription] = useState('');
+    const [activeTimeEntry, setActiveTimeEntry] = useState<number>(0);
     const [error, setError] = useState('');
     const [loading, setLoading] = useState(false);
     const navigate = useNavigate();
@@ -70,13 +71,32 @@ const Dashboard: React.FC = () => {
         if (!selectedCategory) return
         try {
             console.log('Checking in category:', selectedCategory);
-            await checkIn({
+            const response = await checkIn({
                userId : Number(userId),
                categoryId: selectedCategory.categoryId
             });
+            console.log('Check-in response:', response);
+            setActiveTimeEntry(response.data.entryId);
             alert('Check in lyckades');
         } catch (err: any) {
             setError(err.response?.data?.message || 'Failed to check in');
+        }
+    }
+
+    const handleCheckOut = async () => {
+        if (!selectedCategory) return
+        const entryId:number = selectedCategory.activeEntryId;
+        console.log('Entry id:', entryId);
+        try {
+            console.log('Checking out category:', selectedCategory);
+            await checkOut({
+                userId : Number(userId),
+                categoryId: selectedCategory.categoryId,
+                entryId: activeTimeEntry
+            });
+            alert('Check out lyckades');
+        } catch (err: any) {
+            setError(err.response?.data?.message || 'Failed to check out');
         }
     }
 
@@ -159,7 +179,7 @@ const Dashboard: React.FC = () => {
 
                                     <div className="action-buttons">
                                         <button className="check-in-button" onClick={handleCheckIn}>Checka in</button>
-                                        <button className="check-out-button">Checka ut</button>
+                                        <button className="check-out-button" onClick={handleCheckOut}>Checka ut</button>
                                     </div>
                                 </>
                             ) : (
