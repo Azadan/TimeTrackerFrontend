@@ -1,7 +1,14 @@
 import {useState} from "react";
 import {useNavigate} from "react-router-dom";
 import {login} from "../Api/auth.ts";
-import {setAuthToken, getUserIdFromToken, setUserId, deleteAuthToken, formatJwt} from "../Utilities/Auth.ts";
+import {
+    setAuthToken,
+    getUserIdFromToken,
+    setUserId,
+    deleteAuthToken,
+    formatJwt,
+    isUserAdmin
+} from "../Utilities/Auth.ts";
 
 
 const LoginForm: React.FC = () => {
@@ -22,12 +29,15 @@ const LoginForm: React.FC = () => {
             setAuthToken(token);
             const userId : number = getUserIdFromToken(token);
             setUserId(userId);
-            console.log(response);
-            console.log(response.jwt);
-            console.log(userId);
-            console.log(formatJwt(token));
-            alert('Inloggning lyckades');
-            navigate('/dashboard');
+            const admin = isUserAdmin(token);
+            console.log("Is admin:", admin);
+            if (admin) {
+                alert('Inloggning lyckades');
+                navigate('/admin');
+            } else {
+                alert('Inloggning lyckades');
+                navigate('/dashboard');
+            }
         } catch (err: any) {
             setError(err.response?.data?.message || 'Failed login')
             deleteAuthToken();
