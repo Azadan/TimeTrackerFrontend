@@ -1,9 +1,12 @@
 import {useState, useEffect} from "react";
 import {useNavigate} from "react-router-dom";
 import {getCategories, createCategory} from "../Api/Category.ts";
+import {checkIn} from "../Api/TimeEntry.ts";
+import type {Category} from "../Types/Category.ts";
+
 
 const Dashboard: React.FC = () => {
-    const [categories, setCategories] = useState<any[]>([]);
+    const [categories, setCategories] = useState<Category[]>([]);
     const [selectedCategory, setSelectedCategory] = useState<any>(null);
     const [newCategoryName, setNewCategoryName] = useState('');
     const [showCategoryCreateForm, setShowCategoryCreateForm] = useState(false);
@@ -41,7 +44,7 @@ const Dashboard: React.FC = () => {
         }
     }
 
-    const handleCategoryClick = (category: any) => {
+    const handleCategoryClick = (category: Category) => {
         setSelectedCategory(category);
     }
 
@@ -63,6 +66,20 @@ const Dashboard: React.FC = () => {
         }
     }
 
+    const handleCheckIn = async () => {
+        if (!selectedCategory) return
+        try {
+            console.log('Checking in category:', selectedCategory);
+            await checkIn({
+               userId : Number(userId),
+               categoryId: selectedCategory.categoryId
+            });
+            alert('Check in lyckades');
+        } catch (err: any) {
+            setError(err.response?.data?.message || 'Failed to check in');
+        }
+    }
+
     return (
         <div className="dashboard-container">
             <h2>Dina kategorier</h2>
@@ -75,7 +92,7 @@ const Dashboard: React.FC = () => {
                         <p>Du har inga kategorier. Skapa din första kategori!</p>
                     ) : (
                         <ul className="category-list">
-                            {categories.map((category) => {
+                            {categories.map((category: Category) => {
                                 console.log('Category object:', category);
 
                                 return (
@@ -141,7 +158,7 @@ const Dashboard: React.FC = () => {
                                     <p className="category-description">{selectedCategory.description}</p>
 
                                     <div className="action-buttons">
-                                        <button className="check-in-button">Checka in</button>
+                                        <button className="check-in-button" onClick={handleCheckIn}>Checka in</button>
                                         <button className="check-out-button">Checka ut</button>
                                     </div>
                                 </>

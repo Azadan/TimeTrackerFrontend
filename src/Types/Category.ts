@@ -3,3 +3,10 @@ export type createCategoryRequest = {
     description: string
     userId: number
 }
+
+export type Category = {
+    categoryId: number
+    name: string
+    description: string
+    userId: number
+}

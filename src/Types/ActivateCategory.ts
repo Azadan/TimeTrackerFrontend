@@ -3,7 +3,7 @@ export type CheckInRequest = {
     categoryId: number
 }
 
-export interface CheckinRequest {
+export type CheckoutRequest = {
     userId: number
     categoryId: number
     entryId: number

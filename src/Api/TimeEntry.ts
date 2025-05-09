@@ -1,5 +1,5 @@
 import axios from "axios";
-import type {CheckInRequest, CheckinRequest} from "../Types/ActivateCategory.ts";
+import type {CheckInRequest, CheckoutRequest} from "../Types/ActivateCategory.ts";
 
 const API_URL = 'http://localhost:8080/api/v1/timeentry';
 
@@ -19,7 +19,7 @@ export const checkIn = async (request: CheckInRequest) => {
     }
 }
 
-export const checkOut = async (request: CheckinRequest) => {
+export const checkOut = async (request: CheckoutRequest) => {
     try {
         const token = localStorage.getItem('token');
         const reponse = await axios.post(`${API_URL}/checkout`, request, {
