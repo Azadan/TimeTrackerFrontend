@@ -1,7 +1,7 @@
 import {useState} from "react";
 import {useNavigate} from "react-router-dom";
 import {login} from "../Api/auth.ts";
-import {setAuthToken} from "../Utilities/Auth.ts";
+import {setAuthToken, getUserIdFromToken, setUserId, deleteAuthToken, formatJwt} from "../Utilities/Auth.ts";
 
 
 const LoginForm: React.FC = () => {
@@ -18,13 +18,19 @@ const LoginForm: React.FC = () => {
 
         try {
             const response = await login({email, password});
-            setAuthToken(response.jwt);
+            const token : string = response.jwt;
+            setAuthToken(token);
+            const userId : number = getUserIdFromToken(token);
+            setUserId(userId);
             console.log(response);
             console.log(response.jwt);
+            console.log(userId);
+            console.log(formatJwt(token));
             alert('Inloggning lyckades');
-            navigate('/home');
+            navigate('/dashboard');
         } catch (err: any) {
             setError(err.response?.data?.message || 'Failed login')
+            deleteAuthToken();
         } finally {
             setLoading(false);
         }
