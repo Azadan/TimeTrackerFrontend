@@ -6,7 +6,6 @@ import {
     getUserIdFromToken,
     setUserId,
     deleteAuthToken,
-    formatJwt,
     isUserAdmin
 } from "../Utilities/Auth.ts";
 

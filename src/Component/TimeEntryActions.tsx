@@ -26,7 +26,7 @@ const TimeEntryActions: React.FC<TimeEntryActionsProps> = ({
                 userId,
                 categoryId: category.categoryId
             });
-
+            console.log('Check-in response:', response);
             onTimeEntryUpdated();
             alert('Check in lyckades');
         } catch (err: any) {

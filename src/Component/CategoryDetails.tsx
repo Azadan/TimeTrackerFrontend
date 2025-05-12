@@ -1,6 +1,4 @@
 import React from 'react';
-import { checkIn, checkOut } from "../Api/TimeEntry.ts";
-import type { Category } from "../Types/Category.ts";
 import TimeEntryActions from './TimeEntryActions';
 import StatisticsList from './StatisticsList';
 import type { CategoryDetailsProps } from "../Types/Category.ts";

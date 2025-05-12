@@ -17,7 +17,6 @@ const Dashboard: React.FC = () => {
     const [isEditing, setIsEditing] = useState(false);
     const [activeTimeEntry, setActiveTimeEntry] = useState<any>(null);
     const [statistics, setStatistics] = useState<any[]>([]);
-    const [error, setError] = useState('');
     const [loading, setLoading] = useState(false);
     const navigate = useNavigate();
 
@@ -41,11 +40,11 @@ const Dashboard: React.FC = () => {
 
                 if (response.data.length > 0) {
                     setSelectedCategory(response.data[0]);
-                    fetchCategoryStatistics(response.data[0].categoryId);
+                    fetchCategoryStatistics();
                 }
             }
         } catch (err: any) {
-            setError(err.response?.data?.message || 'Failed to fetch categories');
+            console.error(err.response?.data?.message || 'Failed to fetch categories');
         } finally {
             setLoading(false);
         }
@@ -57,8 +56,8 @@ const Dashboard: React.FC = () => {
             if (response.success) {
                 setStatistics(response.data);
             }
-        } catch (err) {
-            setError('Failed to fetch statistics');
+        } catch (err: any) {
+            console.error(err.response?.data?.message || 'Failed to fetch category statistics');
         }
     };
 
