@@ -1,7 +1,7 @@
 import axios from 'axios';
 import type {LoginRequest, RegisterRequest, AuthResponse, ApiResponse, RegisterResponse} from "../Types/auth.ts";
 
-const API_URL = 'http://localhost:8080/api/v1/auth';
+const API_URL = 'https://king-prawn-app-mtxis.ondigitalocean.app/api/v1/auth';
 
 export const login = async (credentials: LoginRequest): Promise<AuthResponse> => {
     try {

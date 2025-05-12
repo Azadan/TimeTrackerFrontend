@@ -1,7 +1,7 @@
 import axios from "axios";
 import type {CheckInRequest, CheckoutRequest} from "../Types/ActivateCategory.ts";
 
-const API_URL = 'http://localhost:8080/api/v1/timeentry';
+const API_URL = 'https://king-prawn-app-mtxis.ondigitalocean.app/api/v1/timeentry';
 
 export const checkIn = async (request: CheckInRequest) => {
     try {

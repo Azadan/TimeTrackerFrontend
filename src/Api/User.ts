@@ -1,7 +1,7 @@
 import axios from "axios";
 import {getAuthToken} from "../Utilities/Auth.ts";
 
-const API_URL = 'http://localhost:8080/api/v1/user';
+const API_URL = 'https://king-prawn-app-mtxis.ondigitalocean.app/api/v1/user';
 
 export const getAllUsers = async () => {
     try {

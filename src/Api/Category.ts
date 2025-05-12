@@ -1,7 +1,7 @@
 import type {createCategoryRequest} from "../Types/Category.ts";
 import axios from "axios";
 
-const API_URL = 'http://localhost:8080/api/v1/category';
+const API_URL = 'https://king-prawn-app-mtxis.ondigitalocean.app/api/v1/category';
 
 export const createCategory = async (categoryData: createCategoryRequest) => {
     try {
