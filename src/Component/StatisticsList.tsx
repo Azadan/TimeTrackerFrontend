@@ -1,4 +1,3 @@
-import react from 'react';
 import type {StatisticsListProps} from "../Types/Statistics.ts";
 
 const StatisticsList: React.FC<StatisticsListProps> = ({ statistics }) => {

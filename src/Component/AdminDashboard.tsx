@@ -86,9 +86,6 @@ const AdminDashboard: React.FC = () => {
         return hours * 60 + minutes;
     };
 
-    const handleViewDetails = (userId: number) => {
-        console.log(`Viewing details for user ${userId}`);
-    };
 
     return (
         <div className="admin-dashboard-container">

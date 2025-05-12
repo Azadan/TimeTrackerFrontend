@@ -77,6 +77,7 @@ export const isTokenExpired = (token: string) : boolean => {
 
 }
 
+/*
 export const formatJwt = (token: string) : string => {
     try {
         const decodedToken = decodeToken(token);
@@ -92,6 +93,7 @@ export const formatJwt = (token: string) : string => {
         throw new Error('Error formatting JWT');
     }
 }
+**/
 
 export const isUserAdmin = (token: string): boolean => {
     try {
